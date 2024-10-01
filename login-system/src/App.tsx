@@ -1,10 +1,14 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import UserSignIn from "./screens/UserSignIn";
 
 function App() {
   return (
-    <div>
-      <h1 className="text-xl">React Login System</h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<UserSignIn />} />
+      </Routes>
+    </Router>
   );
 }
 
