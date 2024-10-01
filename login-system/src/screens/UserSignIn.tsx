@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import CustomInput from "../components/CustomInput";
 
 const UserSignIn = () => {
-  const [isFocused, setIsFocused] = useState(false);
-
   return (
     <div className="flex justify-center items-center w-full h-screen bg-[#122c60]">
       {/* Login container */}
