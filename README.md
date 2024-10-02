@@ -6,7 +6,7 @@ This project is a test case for creating a responsive webpage where users can re
 
 ## Technologies Used
 
-- **Front-end**: React.js (Optional: Next.js) with TypeScript for type checking
+- **Front-end**: React.js with TypeScript for type checking
 - **Styling**: Tailwind CSS
 - **Back-end**: PHP
 - **Database**: MySQL
