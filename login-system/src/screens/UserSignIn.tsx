@@ -12,7 +12,7 @@ const UserSignIn = () => {
 
         {/* Form */}
         <form className="flex flex-col items-center pt-8 text-[13px]">
-          <CustomInput labelText="Username" />
+          <CustomInput labelText="Username" type="username" />
           <CustomInput labelText="Email" type="email" />
           <CustomInput labelText="Password" type="password" />
           <CustomInput labelText="Repeat Password" type="password" />
