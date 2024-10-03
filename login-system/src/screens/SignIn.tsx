@@ -17,6 +17,9 @@ const SignIn = () => {
           <button className="w-[309px] h-[50px] mt-8 rounded-3xl bg-[#1EB2E8] text-white font-bold">
             Login
           </button>
+          <a href="/signup" className="text-[13px] mt-4 text-[#1EB2E8]">
+            Don't have an account? Sign up
+          </a>
         </form>
       </div>
     </div>
