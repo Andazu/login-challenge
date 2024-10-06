@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import CustomInput from "../components/CustomInput";
+import SERVER_URL from "../utils/config";
+import { useNavigate } from "react-router-dom";
 
-const UserSignUp: React.FC = () => {
+const UserSignUp = () => {
+  const navigate = useNavigate();
+
   // State for each input field
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [repeatPassword, setRepeatPassword] = useState<string>("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
 
   // onSubmit handler
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default form submission behavior
 
     // Validate input
@@ -24,10 +28,32 @@ const UserSignUp: React.FC = () => {
     }
 
     // Handle the sign-up logic (API call)
-    console.log("Creating user profile...");
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("Password:", password);
+    try {
+      // Send a POST request to PHP backend
+      const response = await fetch(`${SERVER_URL}/signup.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          email: email,
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.status === "success") {
+        alert("Sign-up successful!");
+        // Redirect to the login page
+        navigate("/");
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
