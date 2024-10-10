@@ -1,8 +1,9 @@
 <?php
 // Allow from any origin
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://localhost:3000"); 
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
 
 // Connect to MySQL database
 $servername = "localhost";
@@ -37,19 +38,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         // Verify the password
         if (password_verify($password, $user['password'])) {
-            // Password is correct, startm the session
+            // Password is correct, start the session with relevant user info
             session_start();
-            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['is_admin'] = $user['is_admin'];
 
-            echo json_encode(["status" => "success", "message" => "User logged in successfully"]);
+            // Send user data back to the frontend
+            $userData = array(
+                "id" => $user['id'],
+                "username" => $user['username'],
+                "email" => $user['email'],
+                "is_admin" => $user['is_admin']
+            );
+
+            // Log session data for debugging
+            error_log("User logged in: " . print_r($_SESSION, true));
+
+            // Include user data in the response
+            echo json_encode(["status" => "success", "message" => "User logged in successfully", "user" => $userData]);
         } else {
             echo json_encode(["status" => "error", "message" => "Incorrect password"]);
         }
     } else {
-        echo json_encode(array("status" => "error", "message" => "Username not found"));
+        echo json_encode(["status" => "error", "message" => "Username not found"]);
     }
 }
 
 // Close the connection
 $conn->close();
-?>

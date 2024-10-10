@@ -1,16 +1,31 @@
 import React, { useState } from "react";
 import CustomInput from "../components/CustomInput";
+import { useLocation, useNavigate } from "react-router-dom";
+import SERVER_URL from "../utils/config";
+
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  is_admin: boolean;
+}
 
 const UserEditProfile: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const user = location.state?.user as User | undefined;
+  console.log("User:", user);
+
   // State for each input field
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState(user?.username || "");
+  const [email, setEmail] = useState(user?.email || "");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [repeatNewPassword, setRepeatNewPassword] = useState("");
 
   // onSubmit handler
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default form submission behavior
 
     // Validate input
@@ -31,11 +46,34 @@ const UserEditProfile: React.FC = () => {
     }
 
     //handle the profile update logic (API call)
-    console.log("Updating profile...");
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("Old Password:", oldPassword);
-    console.log("New Password:", newPassword);
+    try {
+      const response = await fetch(`${SERVER_URL}/updateUserInfo.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: user?.id, // Send user ID
+          username: username,
+          email: email,
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.status === "success") {
+        alert("Profile updated successfully! Please sign in again.");
+        // Navigate to another page (e.g., profile view page)
+        navigate("/");
+      } else {
+        alert(data.message); // Show error if update fails
+      }
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      alert("Failed to update profile. Please try again.");
+    }
   };
 
   return (

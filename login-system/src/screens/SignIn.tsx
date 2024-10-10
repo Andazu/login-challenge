@@ -10,7 +10,7 @@ const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent form submission
 
     // Validate input
@@ -36,9 +36,10 @@ const SignIn = () => {
       const data = await response.json();
 
       if (data.status === "success") {
+        console.log(data.user);
         alert("Login successful!");
         // Redirect to the dashboard
-        navigate("/userprofile");
+        navigate("/userprofile", { state: { user: data.user } });
       } else {
         // Display error message (Incorrect credentials)
         alert(data.message);
@@ -59,7 +60,7 @@ const SignIn = () => {
         {/* Form */}
         <form
           className='flex flex-col items-center pt-8 text-[13px]'
-          onSubmit={handleSubmit}
+          onSubmit={handleLogin}
         >
           <CustomInput
             labelText='Username'
