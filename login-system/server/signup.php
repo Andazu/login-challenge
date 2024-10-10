@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = mysqli_real_escape_string($conn, $data['username']);
     $email = mysqli_real_escape_string($conn, $data['email']);
     $password = mysqli_real_escape_string($conn, $data['password']);
+    $is_admin = $data['is_admin'] ? 1 : 0; // Sanitize the is_admin value
 
     // Check if the email already exists
     $checkEmailQuery = "SELECT * FROM users WHERE email = '$email' OR username = '$username'";
@@ -40,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // Insert the user into the database
-        $insertUserQuery = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$hashedPassword')";
+        $insertUserQuery = "INSERT INTO users (username, email, password, is_admin) VALUES ('$username', '$email', '$hashedPassword', '$is_admin')";
         if ($conn->query($insertUserQuery) === TRUE) {
             echo json_encode(["status" => "success", "message" => "User registered successfully."]);
         } else {

@@ -1,7 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CustomInput from "../components/CustomInput";
 import SERVER_URL from "../utils/config";
 import { useNavigate } from "react-router-dom";
+
+const KONAMI_CODE = [
+  "ArrowUp",
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowLeft",
+  "ArrowRight",
+  "b",
+  "a",
+];
 
 const UserSignUp = () => {
   const navigate = useNavigate();
@@ -11,6 +24,40 @@ const UserSignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [is_admin, setIsAdmin] = useState(false);
+
+  const [inputSequence, setInputSequence] = useState<string[]>([]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Add the pressed key to the sequence
+      setInputSequence((prevSequence) => {
+        const updatedSequence = [...prevSequence, e.key];
+
+        // Check if the input sequence matches the Konami code
+        if (updatedSequence.join("").includes(KONAMI_CODE.join(""))) {
+          alert("Konami Code activated!");
+          // Call the setIsAdmin(true) function if the sequence is correct
+          setIsAdmin(true);
+        }
+
+        // If the length exceeds the Konami Code length, reset sequence
+        if (updatedSequence.length > KONAMI_CODE.length) {
+          updatedSequence.shift(); // Remove the first element to keep it within the length of the Konami code
+        }
+
+        return updatedSequence;
+      });
+    };
+
+    // Listen for keydown events
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   // onSubmit handler
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -39,6 +86,7 @@ const UserSignUp = () => {
           username: username,
           email: email,
           password: password,
+          is_admin: is_admin,
         }),
       });
 

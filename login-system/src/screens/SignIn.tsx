@@ -39,7 +39,11 @@ const SignIn = () => {
         console.log(data.user);
         alert("Login successful!");
         // Redirect to the dashboard
-        navigate("/userprofile", { state: { user: data.user } });
+        if (data.user.is_admin) {
+          navigate("/useroverview", { state: { user: data.user } });
+        } else {
+          navigate("/userprofile", { state: { user: data.user } });
+        }
       } else {
         // Display error message (Incorrect credentials)
         alert(data.message);
