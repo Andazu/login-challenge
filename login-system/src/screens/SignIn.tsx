@@ -39,7 +39,7 @@ const SignIn = () => {
         console.log(data.user);
         alert("Login successful!");
         // Redirect to the dashboard
-        if (data.user.is_admin) {
+        if (data.user.is_admin == 1) {
           navigate("/useroverview", { state: { user: data.user } });
         } else {
           navigate("/userprofile", { state: { user: data.user } });
