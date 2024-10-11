@@ -10,7 +10,6 @@ This project is a test case for creating a responsive webpage where users can re
 - **Styling**: Tailwind CSS
 - **Back-end**: PHP
 - **Database**: MySQL
-- **API**: RESTful API for communication between front-end and back-end
 
 ## Features
 
@@ -20,32 +19,65 @@ This project is a test case for creating a responsive webpage where users can re
 - **Profile Page**: Upon successful login, users are redirected to a personal profile page that displays their:
   - Username
   - Email
-  - Profile picture (optional)
 - **Profile Update**: Users can update their profile information (username, email, and profile picture).
 
 ### Administrator Features
 - **Admin Dashboard**: The administrator has access to a list of all created profiles, which includes:
   - Username
   - Email
-  - Account creation date
 - **Profile Deletion**: Administrators can delete any user profile.
 
-## Requirements
+## Getting Started
 
-### Front-end
-- Implemented using **React.js** with **TypeScript** for type checking.
-- Styled with **Tailwind CSS**.
-- **Next.js** can be optionally used as the client-side framework.
+### Prerequisites
+- Node.js and npm installed
+- PHP installed
+- MySQL installed
 
-### Back-end
-- Developed with **PHP** to handle requests and serve data.
-- Uses **MySQL** for the database to store user information.
+### Setting up the MySQL Database
+Setup your MySQL Server, and remember the credentials for your server as you will need those later in this section.
+Open your MySQL client or the MySQL CLI and run the following commands create the database and the required users table:
+```
+CREATE DATABASE user_profiles;
+USE user_profiles;
 
-### API
-- A **RESTful API** is used for communication between the front-end and back-end. This API handles user registration, login, profile updates, and admin functionalities.
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  is_admin TINYINT(1) DEFAULT 0
+);
+```
+Ensure your db_connect.php file has the correct credentials to connect to your MySQL database. You can find it in the server directory, these are just the ones i used but you can change them to whatever you used during the setup of your server:
+```
+// db_connect.php
+$servername = "localhost";
+$username = "app_user";
+$password = "password";  // Use your actual MySQL password here
+$dbname = "user_profiles";
+```
 
-### Error Handling
-- Errors are gracefully handled, with appropriate error messages displayed for user input validation and server-side issues.
+### Hosting the PHP Backend
+1. Using the Built-In PHP Server
+- Navigate to the server folder and run the following command
+```
+php -S localhost:8000 // Use whichever port you want here
+```
+- This will start a PHP server at http://localhost:8000
+- You can now access the backend endpoints via http://localhost/backendfileexample.php
 
-### Responsiveness
-- The application is fully responsive, designed to function well on different screen sizes, from mobile devices to large desktop screens.
+### Hosting the PHP Backend
+1. Install Dependencies
+- First, navigate to the React frontend directory and install the necessary dependencies by running:
+```
+cd login-system
+npm install
+```
+2. Start the React App
+- To run the React development server, use:
+```
+npm start
+```
+The app will be available at http://localhost:3000
