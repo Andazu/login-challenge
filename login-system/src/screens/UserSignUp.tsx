@@ -29,35 +29,29 @@ const UserSignUp = () => {
   const [inputSequence, setInputSequence] = useState<string[]>([]);
 
   useEffect(() => {
+    console.log(inputSequence);
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Add the pressed key to the sequence
       setInputSequence((prevSequence) => {
         const updatedSequence = [...prevSequence, e.key];
 
-        // Check if the input sequence matches the Konami code
         if (updatedSequence.join("").includes(KONAMI_CODE.join(""))) {
           alert("Konami Code activated!");
-          // Call the setIsAdmin(true) function if the sequence is correct
           setIsAdmin(true);
         }
 
-        // If the length exceeds the Konami Code length, reset sequence
         if (updatedSequence.length > KONAMI_CODE.length) {
-          updatedSequence.shift(); // Remove the first element to keep it within the length of the Konami code
+          updatedSequence.shift();
         }
 
         return updatedSequence;
       });
     };
 
-    // Listen for keydown events
     window.addEventListener("keydown", handleKeyDown);
 
-    // Cleanup event listener on component unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [inputSequence]);
 
   // onSubmit handler
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -150,7 +144,7 @@ const UserSignUp = () => {
             }
           />
           <button
-            type='submit' // Set button type to 'submit'
+            type='submit'
             className='w-[309px] h-[50px] mt-8 rounded-3xl bg-[#1EB2E8] text-white font-bold'
           >
             Submit

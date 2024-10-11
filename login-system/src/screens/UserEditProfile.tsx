@@ -53,7 +53,7 @@ const UserEditProfile: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: user?.id, // Send user ID
+          id: user?.id,
           username: username,
           email: email,
           oldPassword: oldPassword,
@@ -65,7 +65,7 @@ const UserEditProfile: React.FC = () => {
 
       if (data.status === "success") {
         alert("Profile updated successfully! Please sign in again.");
-        // Navigate to another page (e.g., profile view page)
+        // Navigate to sign in page
         navigate("/");
       } else {
         alert(data.message); // Show error if update fails
@@ -131,7 +131,7 @@ const UserEditProfile: React.FC = () => {
           />
 
           <button
-            type='submit' // Set button type to 'submit'
+            type='submit'
             className='w-[309px] h-[50px] mt-8 rounded-3xl bg-[#1EB2E8] text-white font-bold'
           >
             Update
